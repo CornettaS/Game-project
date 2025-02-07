@@ -20,7 +20,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.player = Player()
-        self.enemies = [Enemy(random.randint(0, SCREEN_WIDTH - 50), random.randint(50, 200)) for _ in range(1)]
+        self.enemy_count = 1  # Начальное количество врагов
+        self.enemies = [Enemy(random.randint(0, SCREEN_WIDTH - 50), random.randint(50, 200)) for _ in range(self.enemy_count)]
         self.bullets = []
         self.game_manager = GameManager()
         self.score = 0 
@@ -40,7 +41,8 @@ class Game:
 
             # Проверка на победу
             if len(self.enemies) == 0:
-                self.enemies = [Enemy(random.randint(0, SCREEN_WIDTH - 50), random.randint(50, 200)) for _ in range(5)]
+                self.enemy_count += 1  # Увеличиваем количество врагов
+                self.enemies = [Enemy(random.randint(0, SCREEN_WIDTH - 50), random.randint(50, 200)) for _ in range(self.enemy_count)]
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -90,18 +92,17 @@ class Game:
                     self.score += 1 
                     break
                 
+        if self.score % 2 == 0 and self.score > 0:  # Проверяем, делится ли счет на 5
+            self.enemy_count += 1  # Увеличиваем количество врагов
+            self.enemies = [Enemy(random.randint(0, SCREEN_WIDTH - 50), random.randint(50, 200)) for _ in range(self.enemy_count)]
+            self.score += 1
+
         # Проверка столкновения с игроком и завершение игры 
         for enemy in self.enemies:
             if self.player.rect.colliderect(enemy.rect):
                 self.game_manager.set_game_over()
         
-        for i in range(len(self.enemies)):
-            for j in range(i + 1, len(self.enemies)):
-                if self.enemies[i].rect.colliderect(self.enemies[j].rect):
-                    # Удаляем одного из пересекающихся врагов
-                    self.enemies.pop(j)
-                break  # Выходим из внутреннего цикла, так как список изменился
-
+       
     def draw(self):
         self.screen.fill((0, 0, 0))
         self.screen.blit(self.background, (150, 0))
