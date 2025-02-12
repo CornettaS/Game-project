@@ -15,12 +15,12 @@ BULLET_SPEED = 7
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("Галактическая ебатория")
-        self.background = pygame.image.load("D:\Project\Game-project/background.png")
+        pygame.display.set_caption("Галактическая баталия")
+
         self.clock = pygame.time.Clock()
         self.running = True
         self.player = Player()
-        self.enemies = [Enemy(random.randint(0, SCREEN_WIDTH - 50), random.randint(50, 200)) for _ in range(15)]
+        self.enemies = [Enemy(random.randint(0, SCREEN_WIDTH - 50), random.randint(50, 200)) for _ in range(10)]
         self.bullets = []
         self.game_manager = GameManager()
         self.score = 0 
@@ -43,7 +43,8 @@ class Game:
                  # Проверка на количество врагов
               if len(self.enemies) == 0:
             # Спавн случайного количества врагов от 1 до 15
-                self.enemies = [Enemy(random.randint(0, SCREEN_WIDTH - 50), random.randint(50, 200)) for _ in range(random.randint(1, 15))]
+                self.enemies = [Enemy(random.randint(0, SCREEN_WIDTH - 50), random.randint(50, 200)) for _ in range(random.randint(1, 10))]
+
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -107,7 +108,7 @@ class Game:
 
     def draw(self):
         self.screen.fill((0, 0, 0))
-        self.screen.blit(self.background, (150, 0))
+        self.screen.blit((150, 0))
         self.player.draw(self.screen)
         for enemy in self.enemies:
             enemy.draw(self.screen)
