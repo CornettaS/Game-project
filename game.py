@@ -16,7 +16,6 @@ class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Галактическая баталия")
-
         self.clock = pygame.time.Clock()
         self.running = True
         self.player = Player()
@@ -51,9 +50,15 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
 
+            
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and self.can_shoot:
+                    self.bullets.append(self.player.shoot())
+                    self.can_shoot = False
+
+            elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
-                    self.player.shoot()
+                    self.can_shoot = True   
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
@@ -108,7 +113,6 @@ class Game:
 
     def draw(self):
         self.screen.fill((0, 0, 0))
-        self.screen.blit((150, 0))
         self.player.draw(self.screen)
         for enemy in self.enemies:
             enemy.draw(self.screen)
@@ -145,8 +149,7 @@ class Player:
 # Класс врага
 class Enemy:
     def __init__(self, x, y):
-        self.image = pygame.image.load('D:\Project\Game-project\enemy.png')
-        self.image = pygame.transform.scale(self.image, (50, 30))
+        self.image = pygame.Surface((50, 30))
         self.image.fill((255, 0, 0))
         self.rect = self.image.get_rect(topleft=(x, y))
 
