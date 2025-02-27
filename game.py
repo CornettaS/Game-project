@@ -15,7 +15,7 @@ BULLET_SPEED = 7
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("Галактическая ебатория")
+        pygame.display.set_caption("Галактическая баталия")
         self.background = pygame.image.load("D:\Project\Game-project/background.png")
         self.clock = pygame.time.Clock()
         self.running = True
